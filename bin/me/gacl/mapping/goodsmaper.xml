@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+ 
+<mapper namespace="me.gacl.mapping.goodsmaper">
+
+    <resultMap id="goodsMap" type="me.gacl.domain.Goods">
+        <id property="goodID" column="id" javaType="java.lang.Integer"></id>
+        <result property="goodName" column="goodName" javaType="java.lang.String"></result>
+        <result property="ownerID" column="ownerID" javaType="java.lang.Integer"></result>
+        <result property="reMark" column="reMark" javaType="java.lang.String"></result>
+        <association property="myuser" column="ownerID" javaType="me.gacl.domain.Myuser"
+        select="me.gacl.mapping.usermaper.getUserById"></association>
+    </resultMap>
+
+    <select id="getGoodsByID" parameterType="java.lang.Integer" resultMap="goodsMap">
+        select * from goods where id=#{goodID}
+    </select>
+    
+    <select id="getGoodsByOwner" parameterType="java.lang.Integer" resultType="me.gacl.domain.Goods">
+        select * from goods where ownerID=#{ownerID}
+    </select>
+    
+    <insert id="insertGoods" parameterType="me.gacl.domain.Goods" useGeneratedKeys="true">  
+        INSERT INTO goods (goodName,ownerID,reMark)
+        VALUES   (#{goodName},
+                  #{ownerID},
+                  #{reMark})
+    </insert>
+    
+    <update id="updateGoods" parameterType="me.gacl.domain.Goods" >
+      update goods set goodName=#{goodName},ownerID=#{ownerID},reMark=#{reMark} where id=#{goodID}
+    </update>
+    
+    
+</mapper>
